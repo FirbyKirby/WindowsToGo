@@ -1,32 +1,32 @@
 Windows To Go Creator
 =====================
 
-DESCRIPTION
+###DESCRIPTION  
 This module, once installed, will allow a user to create Windows To Go drives from the PowerShell (PoSh) command line.
 
-REQUIREMENTS
+###REQUIREMENTS  
 PowerShell version 4.0 or later (usually included with Windows 8.1 or later.)
 
-INSTALLATION
+###INSTALLATION  
 1. Unzip the module folder into %USERPROFILE%\Documents\WindowsPowerShell\Modules\. This should create a new folder called "WindowsToGo".
 2. Open an elevated PoSh command line by pressing Windows Key + W and typing "powershell". Right click "PowerShell" in the resultant listing and choose "Run as Administrator".
-3. Type "Set-ExecutionPolicy RemoteSigned" into the command line and press enter. Choose "Yes" at the confirmation prompt.
+3. Type "Set-ExecutionPolicy RemoteSigned" into the command line and press enter. Choose "Yes" at the confirmation prompt.  
 WARNING: This will leave your computer vulnerable to security attacks. The risk should be minimal though.
 4. Type "Get-Module -ListAvailable" at the command prompt and confirm that "WindowsToGo" is listed under "Name" in the %USERPROFILE%\Documents\WindowsPowerShell\Modules\ folder (this should be near the top.)
 5. Once you've confirmed that the module is available in step 3, type "Import-Module WindowsToGo" at the command prompt. This will import the WindowsToGo module and make it available as a function you can call anywhere and at any time.
 
-DOCUMENTATION
+###DOCUMENTATION  
 Once the module is installed, you can learn how to use the module by typing "Get-Help New-WindowsToGo" at a PoSh command line.
 	
-USAGE
+###USAGE  
 1. Open an elevated PoSh command line by pressing Windows Key + W and typing "powershell". Right click "PowerShell" in the resultant listing and choose "Run as Administrator".
 2. Type "New-WindowsToGo" and then enter the appropriate parameters.
 3. Press enter to run the creator.
 
-SUPPORT
+###SUPPORT  
 For support, visit https://github.com/FirbyKirby/WindowsToGo and create an issue.
 
-SPECIAL THANKS
+###SPECIAL THANKS  
 This module was created by generously leveraging the following sample scripts.
 https://technet.microsoft.com/en-us/library/jj721578.aspx
 https://blogs.technet.microsoft.com/heyscriptingguy/2015/10/02/use-powershell-to-create-windows-to-go-keyspart-5/
