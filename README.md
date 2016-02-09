@@ -13,7 +13,7 @@ PowerShell version 4.0 or later (usually included with Windows 8.1 or later.)
 
 ###INSTALLATION  
 1. Move the folder _WindowsToGo_ into _%USERPROFILE%\Documents\WindowsPowerShell\Modules\_.  
-**NOTE:** %USERPROFILE% is your user's folder in Windows. It's usually _C:\Users\\<your user name\>_.
+**NOTE:** %USERPROFILE% is your user's folder in Windows. It's usually _C:\Users\\[your user name\]_.
 2. Open an elevated PoSh command prompt by pressing **Windows Key + W** and typing _powershell_. Right click _Windows PowerShell_ in the resultant listing and choose _Run as Administrator_.
 3. Type `Set-ExecutionPolicy RemoteSigned` at the command prompt and press enter. Choose _Yes_ at the confirmation prompt.  
 **WARNING:** This will reduce your security level when using PowerShell and will allow non-microsoft certified scripts and functions to run (like this one,) but the risk should be minimal if you're an infrequent PowerShell user.  You can reverse this change after you've finished using the function in this module by typing `Set-ExecutionPolicy Restricted` at the command prompt.
