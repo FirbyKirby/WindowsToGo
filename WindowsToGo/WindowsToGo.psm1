@@ -3,7 +3,11 @@
 Function to create "Windows To Go" drives.
 
 .DESCRIPTION
-This function will create one or more "Windows To Go" drives. It can create up to 11 drives in parallel. All drives must be attached before running this function. You must supply an image file to apply to the drive. You can also supply an unattended installation XML file which will be inserted into each drive. A driver, or collection of drivers in a folder, can also be specified and the function will inject them into the final drive(s). The function also checks for the correct PowerShell version, administrator privelages, presence of drives large enough to fit the supplied image, and prompts the user to select exactly which drives to use before commiting to the creation process.
+The New-WindowsToGo function will create one or more "Windows To Go" drives. It can create up to 11 drives in parallel. All drives should be "Windows To Go" certified and attached to the host computer before running this function. 
+
+You must supply the path to a Windows Image file (.wim) that will be applied to the USB drives during the creation process. If required, you can also supply an unattended installation answer file (.xml) which will be inserted into each drive during creation. A driver, or collection of drivers in a folder, (with the extension .inf) can also be specified and the function will inject them into the USB drive(s) created. 
+
+When executed, this function will check for the correct PowerShell version, administrator privelages, validity of any file paths supplied, presence of USB drives large enough to fit the supplied image, and prompts the user to select exactly which attached USB drives to use before commiting to the creation process.
 
 .FUNCTIONALITY
 Create one or more "Windows To Go" drives.
