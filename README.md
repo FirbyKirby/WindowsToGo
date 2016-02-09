@@ -15,21 +15,38 @@ PowerShell version 4.0 or later (usually included with Windows 8.1 or later.)
 1. Move the folder _WindowsToGo_ into _%USERPROFILE%\Documents\WindowsPowerShell\Modules\_.  
 **NOTE:** %USERPROFILE% is your user's folder in Windows. It's usually _C:\Users\\<your user name\>_.
 2. Open an elevated PoSh command prompt by pressing **Windows Key + W** and typing _powershell_. Right click _Windows PowerShell_ in the resultant listing and choose _Run as Administrator_.
-3. Type _Set-ExecutionPolicy RemoteSigned_ at the command prompt and press enter. Choose _Yes_ at the confirmation prompt.  
-**WARNING:** This will reduce your security level when using PowerShell and will allow non-microsoft certified scripts and functions to run (like this one,) but the risk should be minimal if you're an infrequent PowerShell user.  You can reverse this change after you've finished using the function in this module by typing _Set-ExecutionPolicy Restricted_ at the command prompt.
-4. Type _Get-Module -ListAvailable_ at the command prompt and confirm that _WindowsToGo_ is listed under _Name_ in the _%USERPROFILE%\Documents\WindowsPowerShell\Modules\_ folder (this should be near the top of the output produced, right under the command prompt entry and you'll probably need to scroll up to find it.)
-5. Once you've confirmed that the module is available in Step 3, type _Import-Module WindowsToGo_ at the command prompt.  This will import the _WindowsToGo_ module and make it available as a function you can call anywhere and at any time.  
-**NOTE:** If the _Import-Module_ command works correctly, you will not see any output or feedback from running the command. You'll just get another command prompt.
+3. Type `Set-ExecutionPolicy RemoteSigned` at the command prompt and press enter. Choose _Yes_ at the confirmation prompt.  
+**WARNING:** This will reduce your security level when using PowerShell and will allow non-microsoft certified scripts and functions to run (like this one,) but the risk should be minimal if you're an infrequent PowerShell user.  You can reverse this change after you've finished using the function in this module by typing `Set-ExecutionPolicy Restricted` at the command prompt.
+4. Type `Get-Module -ListAvailable` at the command prompt and confirm that _WindowsToGo_ is listed under _Name_ in the _%USERPROFILE%\Documents\WindowsPowerShell\Modules\_ folder (this should be near the top of the output produced, right under the command prompt entry and you'll probably need to scroll up to find it.)
+5. Once you've confirmed that the module is available in Step 3, type `Import-Module WindowsToGo` at the command prompt.  This will import the _WindowsToGo_ module and make it available as a function you can call anywhere and at any time.  
+**NOTE:** If the `Import-Module` command works correctly, you will not see any output or feedback from running the command. You'll just get another command prompt.
 
 ###DOCUMENTATION  
-Once the module is installed, you can learn how to use the module and the _New-WindowsToGo_ command by typing _Get-Help New-WindowsToGo_ at a PoSh command prompt.
+Once the module is installed, you can learn how to use the module and the _New-WindowsToGo_ command by typing `Get-Help New-WindowsToGo` at a PoSh command prompt.
 	
 ###USAGE  
 1. Open an elevated PoSh command prompt by pressing **Windows Key + W** and typing _powershell_. Right click _Windows PowerShell_ in the resultant listing and choose _Run as Administrator_.
-2. Type _New-WindowsToGo_ and then enter the appropriate parameters and press enter. Use _Get-Help New-WindowsToGo_ at the PoSh command prompt if you need help using the function.
+2. Type `New-WindowsToGo` and then enter the appropriate parameters and press enter. Use `Get-Help New-WindowsToGo` at the PoSh command prompt if you need help using the function
 
-###UPGRADES
-If you would like to upgrade you're module, delete the contents of _%USERPROFILE%\Documents\WindowsPowerShell\Modules\WindowsToGo_ and repeate the installation process listed above for the new version. Be sure to restart your PoSh session or add the switch _-Force_ to the _Import-Module_ command used in the installation instructions.
+###EXAMPLES  
+`PS> New-WindowsToGo D:\sources\install.wim`  
+Create "Windows To Go" disk(s) using Windows installation media attached to the computer (usually through DVD or USB.)
+
+`PS> New-WindowsToGo D:\sources\install.wim -Drivers ~\Desktop\Drivers\`  
+Create "Windows To Go" disk(s) using Windows installation media attached to the computer. Inject .inf drivers found in "Drivers" folder on user's desktop.
+
+`PS> New-WindowsToGo ~\Desktop\myimage.wim -UnattendPath ~\Desktop\unattend.xml -MinimumFreeSpace 8GB`  
+Create "Windows To Go" disk(s) using a custom windows image file called "myimage.wim". Insert a custom unattended installtion file called "unattend.xml" into the "Windows To Go" drive(s). Ensure that the drive(s) have at least 8GB of free space remaining after creation.
+
+`PS> New-WindowsToGo ~\Desktop\myimage.wim -NoPrompts`  
+Create "Windows To Go" disk(s) using a custom windows image file called "myimage.wim". Do not prompt the user for input and image all compatible drives attached to the host computer.
+
+###NOTES  
+To improve performance while using the _New-WindowsToGo_ function, disable any real-time virus scan or security software. For example, turn off Windows Defender's real-time protection.
+
+###UPGRADES  
+If you would like to upgrade you're module, delete the contents of _%USERPROFILE%\Documents\WindowsPowerShell\Modules\WindowsToGo_ and repeate the installation process listed above for the new version. Be sure to restart your PoSh session or run the _Import-Module_ command with the _-Force_ switch, like this.  
+`Import-Module WindowsToGo -Force`
 
 ###SUPPORT  
 For support, visit the [GitHub Repository](https://github.com/FirbyKirby/WindowsToGo) and create an issue.
