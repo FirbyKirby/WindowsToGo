@@ -2,21 +2,24 @@ Windows To Go Creator
 =====================
 
 ###DESCRIPTION  
-This module, once installed, will allow a user to create Windows To Go drives from the PowerShell (PoSh) command line.
+This module, once installed, will allow a user to create Windows To Go drives from the PowerShell (PoSh) command line. It will allow the user to run the _New-WindowsToGo_ command at the PoSh command line. This function will create one or more "Windows To Go" drives. It can create up to 11 drives in parallel. All drives must be attached before running this function. You must supply an image file to apply to the drive. You can also supply an unattended installation XML file which will be inserted into each drive. A driver, or collection of drivers in a folder, can also be specified and the function will inject them into the final drive(s). The function also checks for the correct PowerShell version, administrator privelages, presence of drives large enough to fit the supplied image, and prompts the user to select exactly which drives to use before commiting to the creation process.
+
 
 ###REQUIREMENTS  
 PowerShell version 4.0 or later (usually included with Windows 8.1 or later.)
 
 ###INSTALLATION  
-1. Unzip the module into _%USERPROFILE%\Documents\WindowsPowerShell\Modules\_. This should create a new folder called _WindowsToGo_.
+1. Move the folder _WindowsToGo Module_ into _%USERPROFILE%\Documents\WindowsPowerShell\Modules\_.  
+**NOTE:** %USERPROFILE% is your user's folder in Windows. It's usually _C:\Users\<your user name>_.
 2. Open an elevated PoSh command line by pressing **Windows Key + W** and typing _powershell_. Right click _Windows PowerShell_ in the resultant listing and choose _Run as Administrator_.
 3. Type _Set-ExecutionPolicy RemoteSigned_ into the command line and press enter. Choose _Yes_ at the confirmation prompt.  
-WARNING: This will leave your computer vulnerable to security attacks. The risk should be minimal though.
-4. Type _Get-Module -ListAvailable_ at the command prompt and confirm that _WindowsToGo_ is listed under _Name_ in the _%USERPROFILE%\Documents\WindowsPowerShell\Modules\_ folder (this should be near the top.)
-5. Once you've confirmed that the module is available in step 3, type _Import-Module WindowsToGo_ at the command prompt. This will import the WindowsToGo module and make it available as a function you can call anywhere and at any time.
+**WARNING:** This will reduce your security level when using PowerShell, but the risk should be minimal.
+4. Type _Get-Module -ListAvailable_ at the command prompt and confirm that _WindowsToGo_ is listed under _Name_ in the _%USERPROFILE%\Documents\WindowsPowerShell\Modules\_ folder (this should be near the top of the output produced, right under the command line entry. You'll probably need to scroll up to find it.)
+5. Once you've confirmed that the module is available in Step 3, type _Import-Module WindowsToGo_ at the command prompt. This will import the WindowsToGo module and make it available as a function you can call anywhere and at any time.  
+**NOTE:** If the _Import-Module_ command works correctly, you will not see any output or feedback from running the command. You'll just get another command prompt.
 
 ###DOCUMENTATION  
-Once the module is installed, you can learn how to use the module by typing _Get-Help New-WindowsToGo_ at a PoSh command line.
+Once the module is installed, you can learn how to use the module and the _New-WindowsToGo_ command by typing _Get-Help New-WindowsToGo_ at a PoSh command line.
 	
 ###USAGE  
 1. Open an elevated PoSh command line by pressing **Windows Key + W** and typing _powershell_. Right click _Windows PowerShell_ in the resultant listing and choose _Run as Administrator_.
