@@ -7,7 +7,7 @@ The New-WindowsToGo function will create one or more "Windows To Go" drives. It 
 
 You must supply the path to a Windows Image file (.wim) that will be applied to the USB drives during the creation process. If required, you can also supply an unattended installation answer file (.xml) which will be inserted into each drive during creation. A driver, or collection of drivers in a folder, (with the extension .inf) can also be specified and the function will inject them into the USB drive(s) created. 
 
-When executed, this function will check for the correct PowerShell version, administrator privelages, validity of any file paths supplied, presence of USB drives large enough to fit the supplied image, and prompts the user to select exactly which attached USB drives to use before commiting to the creation process.
+When executed, this function will check for the correct PowerShell version, administrator privileges, validity of any file paths supplied, presence of USB drives large enough to fit the supplied image, and prompts the user to select exactly which attached USB drives to use before committing to the creation process.
 
 .FUNCTIONALITY
 Create one or more "Windows To Go" drives.
@@ -19,10 +19,12 @@ Path to a windows image file (.wim). This image will be applied to each "Windows
 Index of image to use inside of windows image file (.wim).This image will be applied to the "Windows To Go" drive(s) created. This is an optional parameter. The default is 1.
 
 .PARAMETER  MinimumFreeSpace
-This parameter is a numeric parameter that defines the minumum free space that should be left over for the OS after the drive is created. This is an optional parameter. The default is 2 GB.
+This parameter is a numeric parameter that defines the minimum free space that should be left over for the OS after the drive is created. This is an optional parameter. The default is 2 GB.
 
 .PARAMETER  UnattendPath
-Path to a windows unattended installation answer file (.xml). This file affects SYSPREP in the Windows To Go drive and only has an effect on an image that has been captured during SYSPREP. This is an optional parameter. If no path is defined, an unattended installation file will be auto-generated to uninstall the Windows Recovery Environment (which is a normal practice for "Windows To Go" drives.) If you captured the supplied image while SYSPREP was running and supplied your own unattended installation file, the existing file in the image takes precedent.
+Path to a windows unattended installation answer file (.xml). This file affects SYSPREP in the Windows To Go drive and only has an effect on an image that has been captured during SYSPREP. This is an optional parameter. 
+
+If no path is defined, an unattended installation file will be auto-generated to uninstall the Windows Recovery Environment (which is a normal practice for "Windows To Go" drives.) If you captured the supplied image while SYSPREP was running and supplied your own unattended installation file, the existing file in the image takes precedent.
 
 .PARAMETER  Drivers
 Path to a driver (.inf) file, or a collection of driver files within a folder. The function will attempt to inject these drivers into the drives. This is an optional parameter.
@@ -36,11 +38,11 @@ Create "Windows To Go" disk(s) using Windows installation media attached to the 
 
 .EXAMPLE
 New-WindowsToGo D:\sources\install.wim -Drivers ~\Desktop\Drivers\
-Create "Windows To Go" disk(s) using Windows installation media attached to the computer. Inject .inf drivers found in "Drivers" folder on user's desktop.
+Create "Windows To Go" disk(s) using Windows installation media attached to the computer. Inject .inf drivers found in "Drivers" folder on users desktop.
 
 .EXAMPLE
 New-WindowsToGo ~\Desktop\myimage.wim -UnattendPath ~\Desktop\unattend.xml -MinimumFreeSpace 8GB
-Create "Windows To Go" disk(s) using a custom windows image file called "myimage.wim". Insert a custom unattended installtion file called "unattend.xml" into the "Windows To Go" drive(s). Ensure that the drive(s) have at least 8GB of free space remaining after creation.
+Create "Windows To Go" disk(s) using a custom windows image file called "myimage.wim". Insert a custom unattended installation file called "unattend.xml" into the "Windows To Go" drive(s). Ensure that the drive(s) have at least 8GB of free space remaining after creation.
 
 .EXAMPLE
 New-WindowsToGo ~\Desktop\myimage.wim -NoPrompts
@@ -49,9 +51,10 @@ Create "Windows To Go" disk(s) using a custom windows image file called "myimage
 .NOTES
 The function requires PowerShell version 4.0 or later (usually found in Windows 8.1 or later.) To improve performance, disable any real-time virus scan or security software. For example, turn off Windows Defender's real-time protection.
 
-KNOWN ISSUES
--Unlike the Windows To Go Creator Utility built into Windows 8/10 Enterprise edition, this function does not modify the advanced startup menu and remove all troubleshooting options except startup settings.
--This function will not enable BitLocker. This feature could be implemented, but I don't have a need for it, and would be better served by individuals turning on and off BitLocker themselves after creation.
+For support, visit the GitHub repository at https://github.com/FirbyKirby/WindowsToGo and create an issue.
+
+.LINK
+https://github.com/FirbyKirby/WindowsToGo
 #>
 
 Function New-WindowsToGo {
@@ -59,7 +62,7 @@ param (
     [parameter(Mandatory=$true, Position=1, HelpMessage="Specify a path to a windows image file (.wim) to be applied to a USB drive.")]
     [alias("Image","WIM","ImagePath","WIMPath")]
     [string]
-    #Path to windows image file (.wim) to image the widnows to go disk.
+    #Path to a windows image file (.wim) to image the USB disk with.
     $InstallWIMPath,
 
     [int]
@@ -69,7 +72,7 @@ param (
 
     [long]
     [alias("FreeSpace","MarginSpace","ExtraSpace")]
-    #Minumum Free Disk space. Default is 2GB. This is the "extra" OS partition space you want to have, at minimum, after the drive is created and the image is applied.
+    #Minimum Free Disk space. Default is 2GB. This is the "extra" OS partition space you want to have, at minimum, after the drive is created and the image is applied.
     $MinimumFreeSpace = 2GB,
 
     [string]
@@ -101,7 +104,7 @@ if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
   return
 }
 
-#Test to see that the function is runnin in Powershell 4.0 or later. If not, throw a warning and exit.
+#Test to see that the function is running in Powershell 4.0 or later. If not, throw a warning and exit.
 if ($PSVersionTable.PSVersion.Major -lt 4){
   Write-Warning "This function requires PowerShell 4.0 or greater (usually Windows 8.1 or later.)`n Please re-run this scrip on a compatible computer."
   return
@@ -110,7 +113,7 @@ if ($PSVersionTable.PSVersion.Major -lt 4){
 #Test to make sure the path is valid. If not, throw a warning and exit.
 Write-Host "Checking supplied file paths..."
 if (Test-Path $InstallWIMPath -PathType Leaf -Include *.wim){
-  #If the path is good, let's gather some info about the image including it's name, description and uncompressed size.
+  #If the path is good, let's gather some info about the image including its name, description and uncompressed size.
   $InstallWIMPath = Resolve-Path $InstallWIMPath
   $ImageName = (Get-WindowsImage -ImagePath $InstallWIMPath -Index $Index).ImageName
   $ImageDescription = (Get-WindowsImage -ImagePath $InstallWIMPath -Index $Index).ImageDescription
@@ -224,21 +227,21 @@ else{
     $Arch = "amd64"
 }
 
-#Find all the USB drives attached to this computer that are not currently used as a boot drive, and of a size larger then the minimum required.
+#Find all the USB drives attached to this computer that are not currently used as a boot drive, and of a size larger than the minimum required.
 #Minimum drive size is set above and is a combination of the image size, system partition size, and the user supplied minimum free space.
 $RawDisks = Get-Disk | Where-Object {$_.Path -match "USBSTOR" -and $_.Size -gt $DriveSize -and -not $_.IsBoot -and -not $_.IsReadOnly }
 if ($RawDisks -eq $null)
 {
-    #If no drives are found that meet the minimum size requirment, or are not currently booted, tell the user and exit.
-    Write-Warning "No USB storage drive(s) larger then $DriveSizeString GB were found."
+    #If no drives are found that meet the minimum size requirement, or are not currently booted, tell the user and exit.
+    Write-Warning "No USB storage drive(s) larger than $DriveSizeString GB were found."
     Write-Verbose "Please ensure that you have at least one USB drive connected before running this function."
     Write-Host "`nExiting the function."
     return
 }
 
-#Show the user all the USB drives currently connected which meeti minimum size critera and are non-boot.
+#Show the user all the USB drives currently connected which meet minimum size criteria and are non-boot.
 $RawDisks | Format-Table @{Label="Disk"; Expression={$_.Number}},@{Label="Name"; Expression={$_.FriendlyName}},@{Label="Status"; Expression={$_.OperationalStatus}},@{Label="Writeable"; Expression={-not $_.IsReadOnly}},@{Label="Size"; Expression={"{0:N2}" -f ($_.AllocatedSize / 1GB) + ' GB'}}
-Write-Host "USB drive(s) larger then $DriveSizeString GB found attached to this computer."
+Write-Host "USB drive(s) larger than $DriveSizeString GB found attached to this computer."
 
 #Create a new empty array where our final, user selected disks will go for batch imaging.
 $Disks = @()
@@ -328,7 +331,7 @@ if ($MaxDisks -lt $CountOfDisks){
 Write-Host "Preparing to create $CountOfDisks drive(s) in parallel."
 Write-Host "NOTE: Up to $MaxDisks drives could be created with the drive letters available.`n"
 
-#Timestamping process start. We'll display elapsed time to user at the end.
+#Time stamping process start. We'll display elapsed time to user at the end.
 $starttime = get-date
 
 #Create a SAN policy file. We'll clean this up at the end.
@@ -342,7 +345,7 @@ if ($ValidUnattendPath){
   $GenerateUnattendFile = $false
 }  
 else{
-  #If the unattend XML file path was not supplied, generate a default unattended installtion XML file."
+  #If the unattend XML file path was not supplied, generate a default unattended installation XML file."
   Write-Host "Generating default unattended installation file to uninstall Windows Recovery Environment.`n"
   $UnattendFile = CreateUnattendFile -Arch $Arch
   $GenerateUnattendFile = $true
@@ -355,7 +358,7 @@ Set-ItemProperty $AutoPlayPath -Name NoDriveTypeAutoRun -Type DWord -Value 0xc
 
 #We're ready to start creating "Windows To Go" drives. Let's let the user know.
 if ($NoPrompts){
-  Write-Host "Creating `"Windows To Go`" on compatable drive(s). This will take a while. You should get some coffee...`n"
+  Write-Host "Creating `"Windows To Go`" on compatible drive(s). This will take a while. You should get some coffee...`n"
 }
 else{
   Write-Host "Creating `"Windows To Go`" on user selected drive(s). This will take a while. You should get some coffee...`n"
@@ -371,10 +374,10 @@ foreach ($Disk in $Disks)
   $FriendlyName = $Disk.FriendlyName
   $DiskNumber = $Disk.Number
 
-  #Make sure you yave enough drive letters before you start a job process.
+  #Make sure you have enough drive letters before you start a job process.
   if ( $driveIndex  -lt $driveLetters.count ){
     Start-Job -Name "Creating `"Windows To Go`" on Disk $DiskNumber ($FriendlyName)" -ScriptBlock {
-      #Initialize variabes from arguments supplied to the job.
+      #Initialize variables from arguments supplied to the job.
       $installWIMPath = $args[0]
       $UnattendFile = $args[1]
       $SanPolicyFile = $args[2]
@@ -394,7 +397,7 @@ foreach ($Disk in $Disks)
       Write-Host "Started creating `"Windows To Go`" for Disk $DiskNumber ($FriendlyName)."
             
       #Insurance policy against access collisions. Stagger start of jobs by imposing sleep. Stagger by 5 seconds.
-      #Disk numbers are probably sequential, starting at 1, and we can only image 11 drives at max, so this will never make a delay more then 1 minute.
+      #Disk numbers are probably sequential, starting at 1, and we can only image 11 drives at max, so this will never make a delay more than 1 minute.
       Start-Sleep -Seconds ($DiskNumber * 5)
 
       #We want to make sure that all selected USB drives are online, writeable and cleaned. This command will erase all data from all selected USB Drives.
@@ -412,20 +415,20 @@ foreach ($Disk in $Disks)
       #For compatibility between UEFI and legacy BIOS we use MBR for the disk partition style.
       Initialize-Disk –InputObject $Disk -PartitionStyle MBR
 
-      #Create and format a new system partion.
+      #Create and format a new system partition.
       #A short sleep between creating a new partition and formatting helps ensure the partition is ready before formatting.
       $SystemPartition = New-Partition –InputObject $Disk -Size ($SystemPartitionSize) -IsActive
       Sleep 1
       Format-Volume -Partition $SystemPartition -FileSystem FAT32 -NewFileSystemLabel "WTG-SYSTEM" -confirm:$False | Out-Null
 
 
-      #Create and format a new OS partion.
+      #Create and format a new OS partition.
       #A short sleep between creating a new partition and formatting helps ensure the partition is ready before formatting.
       $OSPartition = New-Partition –InputObject $Disk -UseMaximumSize
       Sleep 1
       Format-Volume -NewFileSystemLabel "Windows To Go" -FileSystem NTFS -Partition $OSPartition -confirm:$False | Out-Null
       
-      #Errors are unlikely if we were able to clear the disk, but let's check and see if any occoured during partitioning, formatting, and drive letter assignment.
+      #Errors are unlikely if we were able to clear the disk, but let's check and see if any occurred during partitioning, formatting, and drive letter assignment.
       If (!$?){
         Write-Warning "Partition structure creation was unsuccessful."
         Write-Host "Exiting the job."
@@ -496,7 +499,7 @@ foreach ($Disk in $Disks)
           Add-WindowsDriver –Path “${OSDriveLetter}:\” -Driver $Drivers –Recurse -ForceUnsigned -LogPath .\Log-disk_$($DiskNumber).log | Out-Null
         }
         if (!$?){
-          #If there was an error, let the user know that we dont know exactly how many drivers were injected (if any.)
+          #If there was an error, let the user know that we don’t know exactly how many drivers were injected (if any.)
           write-warning "Driver injection resulted in errors. Can't confirm that all drivers were injected successfully. Check the log file for details."
         }
         else{
@@ -544,7 +547,7 @@ foreach ($Disk in $Disks)
 
 #Wait for all threads to finish
 get-job | wait-job | Out-Null
-Write-Host "Creation process complete. Here is a transcript of opperations for each drive."
+Write-Host "Creation process complete. Here is a transcript of operations for each drive."
 
 #Print output from all threads
 get-job | receive-job | Out-Null
@@ -565,11 +568,11 @@ if ($GenerateUnattendFile){
 }
 Write-Host "`nDeleted remaining helper files."
 
-#Timestamp when the process completed and display to the user total time for all drives to be created.
+#Time stamp when the process completed and display to the user total time for all drives to be created.
 $finishtime = get-date
 $elapsedTime = new-timespan $starttime $finishtime
-write-output "`nBatch creation tasks completed in: $elapsedTime  (hh:mm:ss.000)"
-write-output "`nBatch `"Windows To Go`" creator function completed successfully."
+write-output "`nCreation tasks completed in: $elapsedTime  (hh:mm:ss.000)"
+write-output "`n`"Windows To Go`" creator completed successfully."
 return
 }
 
@@ -657,4 +660,4 @@ param (
 #
 #
 #
-########################################################################
+######################################################################## 
