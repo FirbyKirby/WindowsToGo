@@ -49,7 +49,7 @@ New-WindowsToGo ~\Desktop\myimage.wim -NoPrompts
 Create "Windows To Go" disk(s) using a custom windows image file called "myimage.wim". Do not prompt the user for input and image all compatible drives attached to host computer.
 
 .NOTES
-The function requires PowerShell version 4.0 or later (usually found in Windows 8.1 or later.) To improve performance, disable any real-time virus scan or security software. For example, turn off Windows Defender's real-time protection.
+The function requires PowerShell version 5.0 or later (usually found in Windows 10 or later.) To improve performance, disable any real-time virus scan or security software. For example, turn off Windows Defender's real-time protection.
 
 For support, visit the GitHub repository at https://github.com/FirbyKirby/WindowsToGo and create an issue.
 
@@ -105,8 +105,8 @@ if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 }
 
 #Test to see that the function is running in Powershell 4.0 or later. If not, throw a warning and exit.
-if ($PSVersionTable.PSVersion.Major -lt 4){
-  Write-Warning "This function requires PowerShell 4.0 or greater (usually Windows 8.1 or later.)`n Please re-run this scrip on a compatible computer."
+if ($PSVersionTable.PSVersion.Major -lt 5){
+  Write-Warning "This function requires PowerShell 5.0 or greater (usually Windows 10 or later.)`n Please re-run this scrip on a compatible computer."
   return
 }
 

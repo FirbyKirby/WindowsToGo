@@ -2,14 +2,14 @@ Windows To Go Creator
 =====================
 
 ###DESCRIPTION  
-This module, once installed, will allow a user to create "Windows To Go" drives from PowerShell (PoSh.) It will allow a user to run the _New-WindowsToGo_ command at the PoSh command prompt.
+This module, once installed, will allow a user to create Windows To Go drives from PowerShell (PoSh.) It will allow a user to run the _New-WindowsToGo_ command at the PoSh command prompt.
 
-The _New-WindowsToGo_ function will create one or more "Windows To Go" drives. It can create up to 11 drives in parallel. All drives should be "Windows To Go" certified and attached to the host computer before running this function. You must supply the path to a Windows Image file (.wim) that will be applied to the USB drives during the creation process. If required, you can also supply an unattended installation answer file (.xml) which will be inserted into each drive during creation. A driver, or collection of drivers in a folder, (with the extension .inf) can also be specified and the function will inject them into the USB drive(s) created.
+The _New-WindowsToGo_ function will create one or more Windows To Go drives. It can create up to 11 drives in parallel. All drives should be Windows To Go certified and attached to the host computer before running this function. You must supply the path to a Windows Image file (.wim) that will be applied to the USB drives during the creation process. If required, you can also supply an unattended installation answer file (.xml) which will be inserted into each drive during creation. A driver, or collection of drivers in a folder, (with the extension .inf) can also be specified and the function will inject them into the USB drive(s) created.
 
 When executed, this function will check for the correct PowerShell version, administrator privelages, validity of any file paths supplied, presence of USB drives large enough to fit the supplied image, and prompts the user to select exactly which attached USB drives to use before commiting to the creation process.
 
 ###REQUIREMENTS  
-PowerShell version 4.0 or later (usually included with Windows 8.1 or later.)
+PowerShell version 5.0 or later (usually included with Windows 10 or later.)
 
 ###INSTALLATION  
 1. Move the sub-folder _WindowsToGo_ into the _%USERPROFILE%\Documents\WindowsPowerShell\Modules_ folder. If this folder does not exist, create it.  
@@ -30,16 +30,16 @@ Once the module is installed, you can learn how to use the module and the _New-W
 
 ###EXAMPLES  
 `PS> New-WindowsToGo D:\sources\install.wim`  
-Create "Windows To Go" disk(s) using Windows installation media attached to the computer (usually through DVD or USB.)
+Create Windows To Go disk(s) using Windows installation media attached to the computer (usually through DVD or USB.)
 
 `PS> New-WindowsToGo D:\sources\install.wim -Drivers ~\Desktop\Drivers\`  
-Create "Windows To Go" disk(s) using Windows installation media attached to the computer. Inject .inf drivers found in "Drivers" folder on user's desktop.
+Create Windows To Go disk(s) using Windows installation media attached to the computer. Inject .inf drivers found in "Drivers" folder on user's desktop.
 
 `PS> New-WindowsToGo ~\Desktop\myimage.wim -UnattendPath ~\Desktop\unattend.xml -MinimumFreeSpace 8GB`  
-Create "Windows To Go" disk(s) using a custom windows image file called "myimage.wim". Insert a custom unattended installtion file called "unattend.xml" into the "Windows To Go" drive(s). Ensure that the drive(s) have at least 8GB of free space remaining after creation.
+Create Windows To Go disk(s) using a custom windows image file called "myimage.wim". Insert a custom unattended installtion file called "unattend.xml" into the Windows To Go drive(s). Ensure that the drive(s) have at least 8GB of free space remaining after creation.
 
 `PS> New-WindowsToGo ~\Desktop\myimage.wim -NoPrompts`  
-Create "Windows To Go" disk(s) using a custom windows image file called "myimage.wim". Do not prompt the user for input and image all compatible drives attached to the host computer.
+Create Windows To Go disk(s) using a custom windows image file called "myimage.wim". Do not prompt the user for input and image all compatible drives attached to the host computer.
 
 ###NOTES  
 To improve performance while using the _New-WindowsToGo_ function, disable any real-time virus scan or security software. For example, turn off Windows Defender's real-time protection.
