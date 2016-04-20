@@ -15,7 +15,7 @@ PowerShell version 5.0 or later (usually included with Windows 10 or later.)
 1. Move the sub-folder _WindowsToGo_ into the _%USERPROFILE%\Documents\WindowsPowerShell\Modules_ folder. If this folder does not exist, create it.  
 **NOTE:** %USERPROFILE% is your user's folder in Windows. It's usually _C:\Users\\[your user name\]_.
 2. Open an elevated PoSh command prompt by pressing **Windows Key + W** and typing _powershell_. Right click _Windows PowerShell_ in the resultant listing and choose _Run as Administrator_.
-3. Type `Set-ExecutionPolicy RemoteSigned` at the command prompt and press enter. Choose _Yes_ at the confirmation prompt.  
+3. Type `Set-ExecutionPolicy Unrestricted` at the command prompt and press enter. Choose _Yes_ at the confirmation prompt.  
 **WARNING:** This will reduce your security level when using PowerShell and will allow non-microsoft certified scripts and functions to run (like this one,) but the risk should be minimal if you're an infrequent PowerShell user.  You can reverse this change after you've finished using the function in this module by typing `Set-ExecutionPolicy Restricted` at the command prompt.
 4. Type `Get-Module -ListAvailable` at the command prompt and confirm that _WindowsToGo_ is listed under _Name_ in the _%USERPROFILE%\Documents\WindowsPowerShell\Modules\_ folder (this should be near the top of the output produced, right under the command prompt entry and you'll probably need to scroll up to find it.)
 5. Once you've confirmed that the module is available in Step 3, type `Import-Module WindowsToGo` at the command prompt.  This will import the _WindowsToGo_ module and make it available as a function you can call anywhere and at any time.  
